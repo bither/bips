@@ -78,4 +78,4 @@ The length of one QR Code's content can vary with different graphic size. We fin
 When we need multiple pages of QR Codes. We add `(Total page count minus 1):(current page index starts from 0):` in front of every page. e.g. QR Code Page 1 in 3 pages will be prefixed with `2:0:`.
 
 
-[Information capacity and versions of the QR Code]: (http://www.qrcode.com/en/about/version.html)
+[Information capacity and versions of the QR Code]: http://www.qrcode.com/en/about/version.html
