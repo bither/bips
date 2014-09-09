@@ -7,23 +7,29 @@ Created: 2014-9-6
 
 ## Abstract
 
-This BIP describes a way to sign Bitcoin transactions via QR Codes. We defined a format to send unsigned transactions via QR Codes to the device that holding the private key needed to sign this transaction and a format to send the signed transaction back after it's signed on that device.
+This BIP describes a way to sign Bitcoin transactions via QR Codes. 
+
+Let us suppose we have two devices here. One can build and send transactions. And the other has the private key to sign transactions. 
+
+We defined a format to send unsigned transactions via QR Codes to the later, and send signed transactions back to the former.
 
 ## Motivation
 
-In this way, the Bitcoin private keys can be stored away from network connected devices. This is the safest way to store private keys. And via QR Codes, the user can still spend bitcoins belonging to these private keys.
+In this way, the Bitcoin private keys can be stored away from network connected devices. This is the safest way to store private keys. And via QR Codes, the user can still spend bitcoins belonging to these private keys. 
+
+It is easier for different online and offline clients to communicate with each other, if they all follow one common protocol of QR Codes content format.
 
 ## Process
 
-There are two roles in this signing process, "HOT" for the online device which has the private key's transaction history, "COLD" for the offline device which hold the private key.
+There are two roles in this signing process, "HOT" for the online device which has the private key's transaction history and unspent transaction outputs, "COLD" for the offline device which hold the private key.
 
-1. HOT generats a transaction based on the transaction histroy. But it can't sign the transaction.
-2. HOT converts the Information needing to be signed in the unsigned transaction into formated signable QR Codes. HOT displays the QR Codes.
-3. COLD scans HOT's screen and gets the signable Information.
-4. COLD finds the right private key the signable Information requires.
-5. COLD signs the signable Information using the private key.
-6. COLD converts the signed Information to formated QR Codes and displays them.
-7. HOT gets the signed Information and attach it onto the unsigned transaction.
+1. HOT generats a transaction based on the unspent transaction outputs. But it can't sign the transaction.
+2. HOT converts the information needing to be signed in the unsigned transaction into formated signable QR Codes. HOT displays the QR Codes.
+3. COLD scans HOT's screen and gets the signable information.
+4. COLD finds the right private key that the signable information requires.
+5. COLD signs the signable information using the private key.
+6. COLD converts the signed information to formated QR Codes and displays them.
+7. HOT gets the signed information and attach it onto the unsigned transaction.
 8. HOT verifies if the transaction is correctly signed. The transaction will be spread to other peers if it passes the verification. 
 
 ## Format
@@ -62,7 +68,7 @@ Following rules are applied to the content.
 
 * All byte array hex strings only use uppercased letters
 * Uppercased letters in addresses are transformed to `*` followed by the letter. e.g. `A` -> `*A` . And then all the letters are transform to uppercased. In this way, our donation address: `1BsTwoMaX3aYx9Nc8GdgHZzzAGmG669bC3`  is transformed to  `1*BS*TWO*MA*X3A*YX9*NC8*GDG*H*ZZZ*A*GM*G669B*C3`.
-* Amounts of bitcoins are represented by hex strings for the count of satoshis.
+* Amounts of bitcoins are represented by uppercased hex strings for the count of satoshis.
 
 
 ## QR Code Pagination
@@ -73,7 +79,7 @@ A QR Code in a limited graphic size with too much information can be too hard to
 
 So we need a way to paginate the QR Codes.
 
-The length of one QR Code's content can vary with different graphic size. We find 328 to be a suitable content length to be displayed on mobile phones.
+The length of one QR Code's content can vary with different graphic size. We find 328 to be a suitable content length to be displayed and easily scanned on mobile phones.
 
 When we need multiple pages of QR Codes. We add `(Total page count minus 1):(current page index starts from 0):` in front of every page. e.g. QR Code Page 1 in 3 pages will be prefixed with `2:0:`.
 
