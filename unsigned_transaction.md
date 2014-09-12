@@ -52,6 +52,8 @@ Following parts are joined and seperated by colon to make an unsigned QR Codes c
 * The amount of bitcoin being sent (not including transaction fee)
 * Sha256 hash byte arrays of all the transaction inputs seperated by colons which is in hex string format
 
+[source code](https://github.com/bither/bither-android/blob/master/bither-android/src/net/bither/model/QRCodeTxTransport.java#L152)
+
 ### Signed Information
 
 After COLD signs the transaction's inputs, it builds the input scripts based on the ECDSA signactures.
@@ -60,14 +62,16 @@ COLD convert all the input scripts to hex strings and join them with colon as se
 
 This joined string will be the content for the signed QR Codes.
 
+[source code](https://github.com/bither/bither-android/blob/master/bither-android/src/net/bither/activity/cold/SignTxActivity.java#L140)
+
 ## Optimization for QR Code
 
 According to [Information capacity and versions of the QR Code], one QR Code can serve more content if it only contains uppercased letters, digits and some kinds of punctuations, so we can optimize our content.
 
 Following rules are applied to the content.
 
-* All byte array hex strings only use uppercased letters
-* Uppercased letters in addresses are transformed to `*` followed by the letter. e.g. `A` -> `*A` . And then all the letters are transform to uppercased. In this way, our donation address: `1BsTwoMaX3aYx9Nc8GdgHZzzAGmG669bC3`  is transformed to  `1*BS*TWO*MA*X3A*YX9*NC8*GDG*H*ZZZ*A*GM*G669B*C3`.
+* All byte array hex strings only use uppercased letters ([source code](https://github.com/bither/bither-android/blob/master/bither-android/src/net/bither/util/StringUtil.java#L197))
+* Uppercased letters in addresses are transformed to `*` followed by the letter. e.g. `A` -> `*A` . And then all the letters are transform to uppercased. In this way, our donation address: `1BsTwoMaX3aYx9Nc8GdgHZzzAGmG669bC3`  is transformed to  `1*BS*TWO*MA*X3A*YX9*NC8*GDG*H*ZZZ*A*GM*G669B*C3`. ([source code](https://github.com/bither/bither-android/blob/master/bither-android/src/net/bither/util/StringUtil.java#L209))
 * Amounts of bitcoins are represented by uppercased hex strings for the count of satoshis.
 
 
@@ -82,6 +86,8 @@ So we need a way to paginate the QR Codes.
 The length of one QR Code's content can vary with different graphic size. We find 328 to be a suitable content length to be displayed and easily scanned on mobile phones.
 
 When we need multiple pages of QR Codes. We add `(Total page count minus 1):(current page index starts from 0):` in front of every page. e.g. QR Code Page 1 in 3 pages will be prefixed with `2:0:`.
+
+[source code](https://github.com/bither/bither-android/blob/master/bither-android/src/net/bither/util/StringUtil.java#L245)
 
 
 [Information capacity and versions of the QR Code]: http://www.qrcode.com/en/about/version.html
