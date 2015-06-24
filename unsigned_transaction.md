@@ -71,7 +71,7 @@ According to [Information capacity and versions of the QR Code], one QR Code can
 Following rules are applied to the content.
 
 * All byte array hex strings only use uppercased letters ([source code](https://github.com/bither/bither-android/blob/master/bither-android/src/net/bither/util/StringUtil.java#L197))
-* Uppercased letters in addresses are transformed to `*` followed by the letter. e.g. `A` -> `*A` . And then all the letters are transform to uppercased. In this way, our donation address: `1BsTwoMaX3aYx9Nc8GdgHZzzAGmG669bC3`  is transformed to  `1*BS*TWO*MA*X3A*YX9*NC8*GDG*H*ZZZ*A*GM*G669B*C3`. ([source code](https://github.com/bither/bither-android/blob/master/bither-android/src/net/bither/util/StringUtil.java#L209))
+* Bitcoin addresses are represented by the hex strings of the pre-base58 bytes.
 * Amounts of bitcoins are represented by uppercased hex strings for the count of satoshis.
 
 
